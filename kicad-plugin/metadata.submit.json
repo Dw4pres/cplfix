@@ -1,0 +1,32 @@
+{
+  "$schema": "https://go.kicad.org/pcm/schemas/v1",
+  "author": {
+    "contact": {
+      "web": "https://cplfix.com"
+    },
+    "name": "M Dev Labs"
+  },
+  "description": "Normalize KiCad placement rotations for JLCPCB, PCBWay and MacroFab \u2014 corrected CPL, straight from the PCB editor.",
+  "description_full": "CPLfix sends the open board's placement to the free CPLfix API (cplfix.com) and saves a corrected CPL next to the board file as cpl-<cm>.csv. Rotations come from the API, never from a local table: JLCPCB bottom = (180 - rot + delta) % 360, PCBWay and MacroFab rotations pass through as-is. No accounts, no API key, no payment. Works with KiCad 7, 8 and 9 (SWIG pcbnew runtime). Always verify every part in your CM's placement preview before ordering \u2014 it is the final authority.",
+  "identifier": "com.cplfix.cplfix",
+  "license": "MIT",
+  "name": "CPLfix",
+  "resources": {
+    "documentation": "https://cplfix.com/integrations/",
+    "homepage": "https://cplfix.com"
+  },
+  "type": "plugin",
+  "versions": [
+    {
+      "kicad_version": "7.0",
+      "kicad_version_max": "9.0",
+      "runtime": "swig",
+      "status": "stable",
+      "version": "1.0.0",
+      "download_url": "https://github.com/Dw4pres/cplfix/releases/download/v1.0.0/cplfix-1.0.0.zip",
+      "download_sha256": "6fee7d2b9635e46f737d3bef1f405402aa72c1cf7ce6ffd759b361874af0471f",
+      "download_size": 7581,
+      "install_size": 16598
+    }
+  ]
+}

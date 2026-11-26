@@ -1,0 +1,39 @@
+# Example: test the CPLfix action in its own repo
+#
+# Copy this file to .github/workflows/test-normalize.yml in the repo
+# that publishes the action (or in any hardware repo, replacing
+# `uses: ./` with the published action — see README.md). It runs the
+# action against the repo's sample placement files on every push.
+
+name: Test CPLfix action
+
+on:
+  push:
+    paths:
+      - '**.pos'
+      - '**.csv'
+      - 'action.yml'
+      - 'scripts/**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Normalize CPL files for JLCPCB
+        id: cplfix
+        uses: ./
+        with:
+          cm: jlcpcb
+          files: |
+            **/*.pos
+
+      - name: Show results
+        run: |
+          echo "Files normalized: ${{ steps.cplfix.outputs.files-normalized }}"
+          echo "Rotations changed: ${{ steps.cplfix.outputs.parts-changed }}"
+          echo "Warnings: ${{ steps.cplfix.outputs.warnings }}"
+          ls -la **/*.normalized.csv

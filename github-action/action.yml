@@ -1,0 +1,49 @@
+name: 'CPLfix — Normalize CPL'
+description: >-
+  Normalize pick-and-place (CPL) rotations for JLCPCB, PCBWay or
+  MacroFab via the free CPLfix API. No accounts, no API key, no secrets.
+author: 'M Dev Labs'
+branding:
+  icon: 'cpu'
+  color: 'orange'
+
+inputs:
+  cm:
+    description: 'Target CM: jlcpcb, pcbway or macrofab'
+    required: false
+    default: 'jlcpcb'
+  files:
+    description: 'Glob of placement files (.pos/.csv) to normalize'
+    required: false
+    default: '**/*.pos'
+  api-base:
+    description: 'CPLfix API base URL'
+    required: false
+    default: 'https://cplfix.com'
+  output-suffix:
+    description: 'Suffix added to the normalized file, next to the source'
+    required: false
+    default: '.normalized.csv'
+
+outputs:
+  files-normalized:
+    description: 'Number of placement files normalized'
+    value: ${{ steps.normalize.outputs.files-normalized }}
+  parts-changed:
+    description: 'Total parts whose rotation changed across all files'
+    value: ${{ steps.normalize.outputs.parts-changed }}
+  warnings:
+    description: 'Total warnings reported by the API (never fails the run)'
+    value: ${{ steps.normalize.outputs.warnings }}
+
+runs:
+  using: 'composite'
+  steps:
+    - id: normalize
+      shell: bash
+      run: >-
+        python3 "${{ github.action_path }}/scripts/normalize.py"
+        --cm "${{ inputs.cm }}"
+        --files "${{ inputs.files }}"
+        --api-base "${{ inputs.api-base }}"
+        --output-suffix "${{ inputs.output-suffix }}"
